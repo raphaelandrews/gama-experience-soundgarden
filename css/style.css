@@ -5,6 +5,10 @@ body {
     counter-reset: Serial;
 }
 
+body:has(.modal__tickets) {
+}
+
+
 .img-responsive {
     max-width: 100%;
 }
@@ -53,11 +57,6 @@ footer nav ul li {
     padding: 10px;
 }
 
-tr td:first-child:before {
-    counter-increment: Serial;
-    content: counter(Serial);
-}
-
 article.evento h2, 
 article.evento h4 {
     overflow: hidden;
@@ -73,6 +72,18 @@ article.evento p {
     min-height: 72px;
 }
 
-#modal {
-    display: none;
+.modal__tickets {
+   /* display: none;*/
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2rem;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+    background-color: #fff;
+}
+
+.form__infos {
+    text-align: center;
 }

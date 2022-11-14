@@ -1,4 +1,3 @@
-
 const modal = document.getElementById("modal");
 let eventName1 = document.getElementById("eventName"),
     scheduled1 = document.getElementById("scheduled"),
@@ -10,12 +9,12 @@ let eventName1 = document.getElementById("eventName"),
     tickets = document.getElementById("tickets")
 
 const API_URL = "https://xp41-soundgarden-api.herokuapp.com/events";
+const API_TICKETS = "https://xp41-soundgarden-api.herokuapp.com/bookings";
 
 function bookModal (id, eventName, scheduled, numberTickets)  {
-    modal.style.display = "inherit";
     eventName1.innerHTML = eventName;
     scheduled1.innerHTML = scheduled;
-    numberTickets1.innerHTML = numberTickets;
+    numberTickets1.innerHTML = "Ingressos disponíveis: " + numberTickets;
     eventID = id;
 }
 
@@ -39,11 +38,10 @@ function getSDEvents() {
                                 <h2>${events.name} - ${events.scheduled}</h2>
                                 <h4>${events.attractions}</h4>
                                 <p>${events.description}</p>
-                                <button class="btn btn-primary" onclick ="bookModal(
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick ="bookModal(
                                     '${events._id}',
                                     '${events.name}',
                                     '${events.scheduled}',
-                                    '${events.attractions}',
                                     '${events.number_tickets}')"
                                 >
                                     reservar ingresso
@@ -72,7 +70,7 @@ form.onsubmit = (event) => {
         "event_id": eventID
     }
 
-    fetch(API_URL, {
+    fetch(API_TICKETS, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -91,3 +89,6 @@ form.onsubmit = (event) => {
             console.log(error);
         })
 };
+
+
+
