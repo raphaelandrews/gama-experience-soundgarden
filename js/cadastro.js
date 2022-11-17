@@ -10,12 +10,12 @@ const API_URL = "https://xp41-soundgarden-api.herokuapp.com/events";
 form.onsubmit = (event) => {
   event.preventDefault();
 
-  //Tentei com o toISOString, mas só retornava 400, fiz
-  //"manualmente" e funcionou - YYYY-MM-DDTHH:mm:ss.sssZ
+  //Tentei com o toISOString, mas só retornava 400
+  // YYYY-MM-DDTHH:mm:ss.sssZ
   //const dateForm = new Date(scheduled.value).toISOString();
   const dateForm = '20' + scheduled.value.split(' ')[0]
     .split('/').reverse().join('-') + 'T' + scheduled.value
-      .split(' ')[1] + ':00.000Z'
+      .split(' ')[1] + ':00.000Z';
 
   eventInfo = {
     "name": eventName.value,

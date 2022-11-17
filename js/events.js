@@ -18,6 +18,19 @@ function bookModal(id, eventName, scheduled, numberTickets) {
     eventID = id;
 }
 
+var options = {
+    /*weekday: "short",*/
+    year: "numeric",
+    month: "2-digit",
+    day: "numeric"
+};
+
+var options2 = {
+    /*timeZoneName: 'short',*/
+    hour: '2-digit',
+    minute: '2-digit'
+};
+
 function getSDList() {
     fetch(API_URL)
         .then(response => {
@@ -30,13 +43,13 @@ function getSDList() {
                 const article = document.createElement("article");
                 article.classList.add("evento", "card", "p-5", "m-3");
                 articleContent = `
-                            <h2>${events.name} - ${events.scheduled}</h2>
+                            <h2>${events.name} <br> ${new Date(events.scheduled).toLocaleString('pt-BR', options) + "<br/>" + new Date(events.scheduled).toLocaleString('pt-BR', options2)}</h2>
                             <h4>${events.attractions}</h4>
                             <p>${events.description}</p>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick ="bookModal(
                                 '${events._id}',
                                 '${events.name}',
-                                '${events.scheduled}',
+                                '${new Date(events.scheduled).toLocaleString('pt-BR', options) + "<br/>" + new Date(events.scheduled).toLocaleString('pt-BR', options2)}',
                                 '${events.number_tickets}')"
                             >
                                 reservar ingresso
