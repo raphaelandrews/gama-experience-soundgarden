@@ -75,6 +75,7 @@ function getSDEvents() {
 getSDEvents();
 
 
+// Como os eventos adicionados não estão recebendo banners, coloquei banners genéricos
 function banner1() {
     let banner1Title = document.getElementById("show0").innerHTML,
         banner1Text = document.getElementById("attractions0").innerHTML,
@@ -99,6 +100,10 @@ function banner1() {
 // Reservar ingresso
 form.onsubmit = (event) => {
     event.preventDefault();
+    let reservesNumber = Number(numberTickets1.innerHTML.split(":")[1]);
+    if (Number(tickets.value) > reservesNumber) {
+        return alert('Não foi possível realizar a compra, temos apenas ' + reservesNumber + ' disponíveis')
+    }
 
     let bookInfo = {
         "owner_name": ticketName.value,

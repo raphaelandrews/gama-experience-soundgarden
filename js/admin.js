@@ -1,4 +1,5 @@
 const API_URL = "https://xp41-soundgarden-api.herokuapp.com/events";
+const API_TICKETS = "https://xp41-soundgarden-api.herokuapp.com/bookings";
 const API_TICKETS_ID = "https://xp41-soundgarden-api.herokuapp.com/bookings/event";
 const API_TICKET_DELETE = "https://xp41-soundgarden-api.herokuapp.com/bookings"
 
@@ -71,7 +72,7 @@ function getLists(id) {
                             <td scope="row">${index + 1}</td>
                             <td>${events.owner_name}</td>
                             <td>${events.owner_email}</td>
-                            <td>${events.number_tickets}</td>
+                            <td id="numberTicketsUpdate">${events.number_tickets}</td>
                             <td>
                                 <a onclick="deleteReserve('${events._id}')" class="btn btn-danger">excluir</a>
                             </td>
@@ -87,13 +88,42 @@ function getLists(id) {
 }
 
 function deleteReserve(id) {
-    fetch(`${API_TICKET_DELETE}/${id}`, { method: 'DELETE' })
-        .then(response => {
-            confirm('Deseja excuir a reserva?')
-            return window.location.reload()
-        })
-        .catch(error => {
-            alert('Não foi possível excluir a reserva: ' + error)
-            window.location.reload()
-        })
+    let confirmDelete = confirm('Deseja excuir a reserva?')
+    if (confirmDelete === false) {
+        return false
+    } else {
+        fetch(`${API_TICKET_DELETE}/${id}`, { method: 'DELETE' })
+            .then(response => {
+                updateReserve()
+                /*return window.location.reload()*/
+            })
+            .catch(error => {
+                alert('Não foi possível excluir a reserva: ' + error)
+                window.location.reload()
+            })    
+    }
 }
+
+// Arualizar o número de reservas após deletar
+function updateReserve() {
+    let numberTicketsUpdate = document.getElementById("numberTicketsUpdate")
+    let updateReserve = Number(numberTicketsUpdate.innerHTML)
+
+    let bookInfo = { 
+        "owner_name": ticketName.value,
+        "owner_email": ticketEmail.value,
+        "number_tickets": updateReserve,
+        "event_id": eventID
+    }
+
+    fetch(API_TICKETS, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookInfo),
+    })
+        .then(response => {
+            return response.json();
+        })
+};

@@ -107,3 +107,8 @@ article.evento p {
 .carouselBtn {
     margin-top: 1rem
 }
+
+.modal__reserves {
+    width: 85%;
+    max-width: 1000px;
+}
