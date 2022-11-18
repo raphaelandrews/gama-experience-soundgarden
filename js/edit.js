@@ -9,44 +9,54 @@ let eventName = document.getElementById('nome'),
 
 const API_URL = "https://xp41-soundgarden-api.herokuapp.com/events";
 
-fetch(`${API_URL}/${id}`, { method: "GET", })
-    .then(response => {
-        return response.json();
-    }).then(event => {
+async function getEvent() {
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: "GET", headers: {
+                "Content-Type": "application/json",
+            }
+        });
+        const event = await response.json();
         eventName.value = event.name;
         poster.value = event.poster;
         attractions.value = event.attractions.join(", ");
         description.value = event.description;
         scheduled.value = event.scheduled;
         numberTickets.value = event.number_tickets;
-    })
-    .catch(error => {console.error(error)});
+    }
+    catch (error) {
+        alert('Requisição falhou: ' + error)
+        console.log(error);
+    };
+}
 
-form.onsubmit = (event) => {
+getEvent();
+
+form.onsubmit = async (event) => {
     event.preventDefault();
 
-    eventInfo = {
-        "name": eventName.value,
-        "poster": "poster",
-        "attractions": attractions.value.split(","),
-        "description": description.value,
-        "scheduled": scheduled.value,
-        "number_tickets": numberTickets.value
-    }
+    try {
+        eventInfo = {
+            "name": eventName.value,
+            "poster": "poster",
+            "attractions": attractions.value.split(","),
+            "description": description.value,
+            "scheduled": scheduled.value,
+            "number_tickets": numberTickets.value
+        }
 
-    fetch(`${API_URL}/${id}`, {
-        method: 'PUT',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(eventInfo),
-    })
-        .then(() => {
-            alert("O evento foi alterado!");
-            window.location.replace("admin.html");
+        await fetch(`${API_URL}/${id}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(eventInfo),
         })
-        .catch(error => {
-            alert('Não foi possível editar o evento: ' + error)
-            console.log(error);
-        })
+        alert("O evento foi alterado!");
+        window.location.replace("admin.html");
+    }
+    catch (error) {
+        alert('Não foi possível editar o evento: ' + error)
+        console.log(error);
+    };
 };

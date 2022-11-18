@@ -18,56 +18,70 @@ function bookModal(id, eventName, scheduled, numberTickets) {
     eventID = id;
 }
 
-var options = {
+var optionsDate = {
     /*weekday: "short",*/
     year: "numeric",
     month: "2-digit",
     day: "numeric"
 };
 
-var options2 = {
+var optionsTime = {
     /*timeZoneName: 'short',*/
     hour: '2-digit',
     minute: '2-digit'
 };
 
-function getSDList() {
-    fetch(API_URL)
-        .then(response => {
-            if (!response.ok) { return new Error("Requisção falhou") }
-            return response.json();
+// Obter eventos
+async function getList() {
+    try {
+        const response = await fetch(API_URL, {
+            method: "GET", headers: {
+                "Content-Type": "application/json",
+            }
         })
-        .then(data => {
-            data.forEach((events) => {
-
-                const article = document.createElement("article");
-                article.classList.add("evento", "card", "p-5", "m-3");
-                articleContent = `
-                            <h2>${events.name} <br> ${new Date(events.scheduled).toLocaleString('pt-BR', options) + "<br/>" + new Date(events.scheduled).toLocaleString('pt-BR', options2)}</h2>
+        const data = await response.json();
+        data.forEach((events) => {
+            const article = document.createElement("article");
+            article.classList.add("evento", "card", "p-5", "m-3");
+            articleContent = `
+                            <h2>${events.name} <br> ${new Date(events.scheduled).toLocaleString('pt-BR', optionsDate) + "<br/>" + new Date(events.scheduled).toLocaleString('pt-BR', optionsTime)}</h2>
                             <h4>${events.attractions}</h4>
                             <p>${events.description}</p>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick ="bookModal(
+                            ${events.number_tickets != 0 ?
+                    `<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick ="bookModal(
                                 '${events._id}',
                                 '${events.name}',
-                                '${new Date(events.scheduled).toLocaleString('pt-BR', options) + "<br/>" + new Date(events.scheduled).toLocaleString('pt-BR', options2)}',
+                                '${new Date(events.scheduled).toLocaleString('pt-BR', optionsDate) + "<br/>" + new Date(events.scheduled).toLocaleString('pt-BR', optionsTime)}',
                                 '${events.number_tickets}')"
                             >
                                 reservar ingresso
-                            </button>
-                `;
-                article.innerHTML = articleContent;
-                document.querySelector('.shows').appendChild(article);
-
-            })
+                            </button>`
+                    :
+                    `<button class="btn btn-dark">
+                                ingressos esgotados
+                            </button>`
+                }
+                        `;
+            article.innerHTML = articleContent;
+            document.querySelector('.shows').appendChild(article);
         })
-        .catch(error => { console.error(error) });
+    }
+    catch (error) {
+        alert('Requisição falhou: ' + error)
+        console.log(error);
+    };
 }
 
-getSDList();
+getList();
 
 // Reservar ingresso
-form.onsubmit = (event) => {
+form.onsubmit = async (event) => {
     event.preventDefault();
+
+    let reservesNumber = Number(numberTickets1.innerHTML.split(":")[1]);
+    if (Number(tickets.value) > reservesNumber) {
+        return alert('Não foi possível realizar a compra, temos apenas ' + reservesNumber + ' disponíveis')
+    }
 
     let bookInfo = {
         "owner_name": ticketName.value,
@@ -76,22 +90,19 @@ form.onsubmit = (event) => {
         "event_id": eventID
     }
 
-    fetch(API_TICKETS, {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookInfo),
-    })
-        .then(response => {
-            return response.json();
+    try {
+        await fetch(API_TICKETS, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bookInfo),
         })
-        .then(() => {
-            alert("O ticket foi comprado!");
-            window.location.replace("admin.html");
-        })
-        .catch(error => {
-            alert('Sua reserva falhou: ' + error)
-            console.log(error);
-        })
+        alert("O ticket foi comprado!");
+        window.location.replace("admin.html");
+    }
+    catch (error) {
+        alert('Sua reserva falhou: ' + error)
+        console.log(error);
+    };
 };

@@ -74,6 +74,10 @@ article.evento p {
     min-height: 72px;
 }
 
+article.evento span {
+    margin-bottom: 1rem
+}
+
 .modal__tickets {
    /* display: none;*/
     position: fixed;
