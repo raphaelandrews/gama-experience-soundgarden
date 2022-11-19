@@ -15,18 +15,21 @@
     <a href="">Caio de Melo</a>
   </p>
   
-  <br>
+ ##
+
+  <h4><img src="./img/sound-logo.svg" alt="Logo SoundGarden" width="20" height="20"> SoundGarden API</h4>
+ 
+  <img src="./img/preview.gif" alt="Preview SoundGarden" width="auto" height="auto">
 
   <p align="center">
-    <img src="./img/sound-logo.svg" alt="Logo SoundGarden" width="20" height="20"> SoundGarden API
-    <img src="./img/preview.gif" alt="Preview SoundGarden" width="auto" height="auto">
-    <br />
     <br />
     <h4 align="center">Index</h4>
     <a href="#tada-live-preview"> :tada: Live Preview </a> .
-    <a href="#scroll-features"> :scroll: Features </a> .
-    <a href="#fire-clone-and-run"> :fire: Clone and Run </a> .
-    <a href="#hammer-tools"> :hammer: Tools </a> 
+    <a href="#open_file_folder-about-the-project"> :open_file_folder: About the Project </a> . 
+    <a href="#scroll-features"> :scroll: Features </a> . 
+    <a href="#fire-clone-and-run"> :fire: Clone and Run </a> . 
+    <a href="#hammer_and_pick-built-with"> :hammer_and_pick: Built With </a> . 
+    <a href="#handshake-collaborators"> :handshake: Collaborators </a> 
   </p>
 </div>
 
@@ -36,7 +39,7 @@
 <br />
 
 ## :open_file_folder: About the Project
-Essa é a nossa resposta ao Desafio Hacker da Gama Academy que consiste em requisições à API SoundGarden utilizando os métodos GET, POST, PUT e DELETE. 
+Projeto para o segundo Desafio Hacker da Gama Academy que consiste em requisições à API SoundGarden utilizando os métodos GET, POST, PUT e DELETE.
 
 <br />
 
@@ -80,7 +83,7 @@ Live Server Extension or open index.html
 
 <br />
 
-## :handshake: Contributiros
+## :handshake: Collaborators
 <h4>Raphael Andrews</h4>
 
 [![LinkedIn][linkedin-shield]][linkedin-url]
